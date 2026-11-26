@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.15)
+project(Lab06 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+function(lab6_app name)
+    add_executable(${name} WIN32 ${ARGN})
+    target_compile_definitions(${name} PRIVATE UNICODE _UNICODE)
+    if(MSVC)
+        target_compile_options(${name} PRIVATE /utf-8 /W4 /EHsc)
+    else()
+        target_compile_options(${name} PRIVATE -Wall -Wextra)
+        target_link_options(${name} PRIVATE -municode -static)
+    endif()
+endfunction()
+
+lab6_app(Server  src/server.cpp)
+lab6_app(Client1 src/client1.cpp src/client_core.cpp)
+lab6_app(Client2 src/client2.cpp src/client_core.cpp)
